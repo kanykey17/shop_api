@@ -1,6 +1,11 @@
 from rest_framework import generics
 from .models import Category, Product, Review
-from .serializers import CategorySerializer, ProductSerializer, ReviewSerializer
+from .serializers import (
+    CategorySerializer,
+    ProductSerializer,
+    ReviewSerializer,
+    ProductReviewSerializer
+)
 
 
 # Categories
@@ -23,6 +28,12 @@ class ProductListAPIView(generics.ListAPIView):
 class ProductDetailAPIView(generics.RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+
+# Products with reviews + rating
+class ProductReviewListAPIView(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductReviewSerializer
 
 
 # Reviews
