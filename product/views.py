@@ -1,47 +1,46 @@
 from rest_framework import generics
 from .models import Category, Product, Review
-from .serializers import (
-    CategorySerializer,
-    ProductSerializer,
-    ReviewSerializer,
-    ProductReviewSerializer
-)
+from .serializers import CategorySerializer, ProductSerializer, ReviewSerializer, ProductReviewSerializer
 
 
-# Categories
-class CategoryListAPIView(generics.ListAPIView):
+# Category
+
+class CategoryListCreateAPIView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 
-class CategoryDetailAPIView(generics.RetrieveAPIView):
+class CategoryDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 
-# Products
-class ProductListAPIView(generics.ListAPIView):
+# Product
+
+class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
 
-class ProductDetailAPIView(generics.RetrieveAPIView):
+class ProductDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
 
-# Products with reviews + rating
+# Products with reviews
+
 class ProductReviewListAPIView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductReviewSerializer
 
 
-# Reviews
-class ReviewListAPIView(generics.ListAPIView):
+# Review
+
+class ReviewListCreateAPIView(generics.ListCreateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
 
 
-class ReviewDetailAPIView(generics.RetrieveAPIView):
+class ReviewDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
