@@ -37,3 +37,16 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.product.title} ({self.stars})"
+    
+import random
+from django.contrib.auth.models import User
+
+
+class ConfirmationCode(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    code = models.CharField(max_length=6)
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = str(random.randint(100000, 999999))
+        super().save(*args, **kwargs)

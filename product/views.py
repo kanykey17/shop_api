@@ -132,3 +132,54 @@ class ProductReviewListAPIView(APIView):
         products = Product.objects.all()
         serializer = ProductReviewSerializer(products, many=True)
         return Response(serializer.data)
+    
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth.models import User
+from rest_framework_simplejwt.tokens import RefreshToken
+
+from .serializers import RegisterSerializer, ConfirmSerializer
+
+
+class RegisterAPIView(APIView):
+
+    def post(self, request):
+        serializer = RegisterSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            code = user.confirmationcode.code
+            return Response({
+                "message": "User created. Confirm your account.",
+                "code": code
+            })
+        return Response(serializer.errors, status=400)
+
+
+class ConfirmAPIView(APIView):
+
+    def post(self, request):
+        serializer = ConfirmSerializer(data=request.data)
+        if serializer.is_valid():
+            return Response({"message": "User confirmed"})
+        return Response(serializer.errors, status=400)
+
+
+class LoginAPIView(APIView):
+
+    def post(self, request):
+        user = User.objects.get(username=request.data['username'])
+
+        if not user.check_password(request.data['password']):
+            return Response({"error": "Wrong password"}, status=400)
+
+        if not user.is_active:
+            return Response({"error": "User not confirmed"}, status=400)
+
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            "access": str(refresh.access_token),
+            "refresh": str(refresh)
+        })

@@ -21,3 +21,11 @@ urlpatterns = [
     path('api/v1/reviews/', ReviewListCreateAPIView.as_view()),
     path('api/v1/reviews/<int:pk>/', ReviewDetailAPIView.as_view()),
 ]
+
+from .views import RegisterAPIView, LoginAPIView, ConfirmAPIView
+
+urlpatterns += [
+    path('api/v1/users/register/', RegisterAPIView.as_view()),
+    path('api/v1/users/login/', LoginAPIView.as_view()),
+    path('api/v1/users/confirm/', ConfirmAPIView.as_view()),
+]
