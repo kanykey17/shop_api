@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: shop_db
+      POSTGRES_USER: shop_user
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    command:  sh -c "sleep 5 && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DB_NAME: shop_db
+      DB_USER: shop_user
+      DB_PASSWORD: 1234
